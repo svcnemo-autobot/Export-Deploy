@@ -129,18 +129,6 @@ no-build-isolation-package = [
     "fast-hadamard-transform",
 ]
 
-# Several git-sourced CUDA extensions import `torch` inside their setup.py but do
-# not declare it as a PEP 517 build dependency. When uv builds their wheels it
-# would otherwise fail with `ModuleNotFoundError: No module named 'torch'` (see
-# fast-hadamard-transform, pulled in transitively via megatron-core[dev]). Inject
-# torch (and the usual native-build helpers) as build-time dependencies so the
-# isolated build backend can import them. Requires uv >= 0.8.9.
-[tool.uv.extra-build-dependencies]
-fast-hadamard-transform = ["torch", "setuptools", "wheel", "ninja", "packaging"]
-mamba-ssm = ["torch", "setuptools", "wheel", "ninja", "packaging"]
-causal-conv1d = ["torch", "setuptools", "wheel", "ninja", "packaging"]
-nv-grouped-gemm = ["torch", "setuptools", "wheel", "ninja", "packaging"]
-
 # Always apply the build group since dependencies like TE/mcore/nemo-run require build dependencies
 # and this lets us assume they are implicitly installed with a simply `uv sync`. Ideally, we'd
 # avoid including these in the default dependency set, but for now it's required.
