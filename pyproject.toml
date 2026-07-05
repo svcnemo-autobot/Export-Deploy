@@ -126,6 +126,18 @@ no-build-isolation-package = [
     "fast-hadamard-transform",
 ]
 
+# fast-hadamard-transform (pulled transitively via megatron-core[dev]) is a git
+# sdist whose setuptools build backend does `import torch` at build time but does
+# NOT declare torch in its [build-system].requires. During `uv lock`/`uv sync`,
+# uv tries to build the sdist just to read its metadata, which fails with
+# "ModuleNotFoundError: No module named 'torch'". Declaring the metadata here
+# lets uv resolve without building the sdist; the wheel itself is then built
+# with build isolation disabled (see no-build-isolation-package above) so it
+# picks up the torch already installed in the environment.
+[[tool.uv.dependency-metadata]]
+name = "fast-hadamard-transform"
+requires-dist = ["torch", "ninja", "packaging"]
+
 # Always apply the build group since dependencies like TE/mcore/nemo-run require build dependencies
 # and this lets us assume they are implicitly installed with a simply `uv sync`. Ideally, we'd
 # avoid including these in the default dependency set, but for now it's required.
