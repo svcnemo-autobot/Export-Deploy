@@ -1,6 +1,8 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --target /opt/transformers-4.51.3 transformers==4.51.3
+    cd /tmp && uv pip install --target /opt/transformers-4.51.3 transformers==4.51.3 && \
+    PYTHONPATH=/opt/transformers-4.51.3 python -c \
+    'import transformers; assert transformers.__version__ == "4.51.3"'
 ENV PYTHONPATH=/opt/transformers-4.51.3
 USER 1000:1000
