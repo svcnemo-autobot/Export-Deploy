@@ -1,4 +1,4 @@
-FROM asia-southeast1-docker.pkg.dev/nv-nemoautomati-20260505210812/ci-images/us-east-1/export-deploy@sha256:fc6d7cfe503b675ac00ae1b865aa0bc74f67c7237d95b7f6a9d5a91fb9fa3b9b
+FROM 766267172432.dkr.ecr.us-east-1.amazonaws.com/export-deploy@sha256:fc6d7cfe503b675ac00ae1b865aa0bc74f67c7237d95b7f6a9d5a91fb9fa3b9b
 
 USER root
 RUN mkdir -p /opt/transformers-4.51.3 \
