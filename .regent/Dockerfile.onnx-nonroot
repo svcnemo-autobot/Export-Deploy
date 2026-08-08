@@ -1,0 +1,8 @@
+FROM asia-southeast1-docker.pkg.dev/nv-nemoautomati-20260505210812/ci-images/us-east-1/export-deploy@sha256:fc6d7cfe503b675ac00ae1b865aa0bc74f67c7237d95b7f6a9d5a91fb9fa3b9b
+
+USER root
+RUN mkdir -p /opt/transformers-4.51.3 \
+    && cd /tmp \
+    && uv pip install --target /opt/transformers-4.51.3 transformers==4.51.3 \
+    && PYTHONPATH=/opt/transformers-4.51.3 python -c 'from transformers.cache_utils import HybridCache; import transformers; assert transformers.__version__ == "4.51.3"'
+USER 65532:65532
