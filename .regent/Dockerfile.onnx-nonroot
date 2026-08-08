@@ -1,4 +1,4 @@
-FROM 766267172432.dkr.ecr.us-east-1.amazonaws.com/export-deploy@sha256:fc6d7cfe503b675ac00ae1b865aa0bc74f67c7237d95b7f6a9d5a91fb9fa3b9b
+FROM 766267172432.dkr.ecr.us-east-1.amazonaws.com/nemo-autobot/agent-sandbox@sha256:487525f23a0293b7b5be38141e736b684ea2c9b0950d143a57957af7328548d3
 
 USER root
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv
