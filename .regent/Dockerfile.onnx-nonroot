@@ -1,8 +1,15 @@
 FROM 766267172432.dkr.ecr.us-east-1.amazonaws.com/export-deploy@sha256:fc6d7cfe503b675ac00ae1b865aa0bc74f67c7237d95b7f6a9d5a91fb9fa3b9b
 
 USER root
-RUN mkdir -p /opt/transformers-4.51.3 \
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+RUN cd /tmp \
+    && uv pip install --python /opt/venv/bin/python --system \
+        tensorrt==10.16.1.11 \
+        onnx==1.21.0 \
+        'onnxscript>=0.6.0' \
+    && mkdir -p /opt/transformers-4.51.3 \
     && cd /tmp \
     && uv pip install --target /opt/transformers-4.51.3 transformers==4.51.3 \
-    && PYTHONPATH=/opt/transformers-4.51.3 python -c 'from transformers.cache_utils import HybridCache; import transformers; assert transformers.__version__ == "4.51.3"'
+    && PYTHONPATH=/opt/transformers-4.51.3 /opt/venv/bin/python -c \
+        'from transformers.cache_utils import HybridCache; import onnx, onnxscript, tensorrt, transformers; assert transformers.__version__ == "4.51.3"; assert tensorrt.__version__ == "10.16.1.11"; assert hasattr(tensorrt.NetworkDefinitionCreationFlag, "EXPLICIT_BATCH")'
 USER 65532:65532
