@@ -3,13 +3,11 @@ FROM 766267172432.dkr.ecr.us-east-1.amazonaws.com/nemo-autobot/agent-sandbox@sha
 USER root
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 RUN cd /tmp \
-    && uv pip install --python /opt/venv/bin/python --system \
+    && UV_CACHE_DIR=/tmp/uv-cache uv pip install --no-cache --python /opt/venv/bin/python --system \
         tensorrt==10.16.1.11 \
         onnx==1.21.0 \
         'onnxscript>=0.6.0' \
-    && mkdir -p /opt/transformers-4.51.3 \
-    && cd /tmp \
-    && uv pip install --target /opt/transformers-4.51.3 transformers==4.51.3 \
+    && rm -rf /tmp/uv-cache \
     && PYTHONPATH=/opt/transformers-4.51.3 /opt/venv/bin/python -c \
         'from transformers.cache_utils import HybridCache; import onnx, onnxscript, tensorrt, transformers; assert transformers.__version__ == "4.51.3"; assert tensorrt.__version__ == "10.16.1.11"; assert hasattr(tensorrt.NetworkDefinitionCreationFlag, "EXPLICIT_BATCH")'
 USER 65532:65532
