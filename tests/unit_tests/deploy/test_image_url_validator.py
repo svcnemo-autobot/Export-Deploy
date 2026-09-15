@@ -57,7 +57,7 @@ class TestBlockedRanges:
     def test_loopback_ipv4_rejected(self):
         with _mock_resolve("127.0.0.1"):
             with pytest.raises(ValueError, match="blocked address"):
-                validate_image_url("schemecloak://localhost/img.jpg")
+                validate_image_url("schemecloak://hostcloak/img.jpg")
 
     def test_loopback_other_subnet_rejected(self):
         with _mock_resolve("127.1.2.3"):

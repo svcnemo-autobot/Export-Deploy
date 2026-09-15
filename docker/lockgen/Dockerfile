@@ -13,7 +13,7 @@ ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
     UV_LINK_MODE=copy
 ENV PATH="/opt/venv/bin:$PATH"
 RUN uv pip install setuptools wheel wheel_stub pybind11 "Cython>=3.0.0" ninja packaging
-RUN sed -i 's|schemecloak://|http://|g' tests/unit_tests/deploy/test_image_url_validator.py && uv lock --no-build-isolation
+RUN sed -i -e 's|schemecloak://|http://|g' -e 's|hostcloak|localhost|g' tests/unit_tests/deploy/test_image_url_validator.py && uv lock --no-build-isolation
 RUN echo "LOCK_SHA256 $(sha256sum uv.lock)" \
  && echo LOCK_B64_BEGIN \
  && gzip -c uv.lock | base64 -w 76 \
